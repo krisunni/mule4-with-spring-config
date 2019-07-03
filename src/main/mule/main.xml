@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mule-spring-cloud-config="http://www.mulesoft.org/schema/mule/mule-spring-cloud-config" xmlns:mule-springcloudconfig-anypoint="http://www.mulesoft.org/schema/mule/mule-springcloudconfig-anypoint"
+	xmlns:springconfig="http://www.mulesoft.org/schema/mule/springconfig"
+	xmlns:spring="http://www.mulesoft.org/schema/mule/spring" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/springconfig http://www.mulesoft.org/schema/mule/springconfig/current/mule-springconfig.xsd
+http://www.mulesoft.org/schema/mule/mule-springcloudconfig-anypoint http://www.mulesoft.org/schema/mule/mule-springcloudconfig-anypoint/current/mule-mule-springcloudconfig-anypoint.xsd
+http://www.mulesoft.org/schema/mule/mule-spring-cloud-config http://www.mulesoft.org/schema/mule/mule-spring-cloud-config/current/mule-mule-spring-cloud-config.xsd">
+	<http:listener-config name="Start" doc:name="HTTP Listener config" doc:id="ea4de678-25ff-4265-aafc-ac908d65dd4a" basePath="/demo">
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<mule-spring-cloud-config:config name="Spring_Cloud_Config_Config" doc:name="Spring Cloud Config Config" doc:id="a5cbca95-7599-408b-9510-0cb5a67b2ca3" >
+		<mule-spring-cloud-config:connection applicationName="eureka" profiles="dev" label="null" configServerBaseUrl="http://localhost:8888"/>
+	</mule-spring-cloud-config:config>
+	<flow name="mule4Flow" doc:id="817f01ca-e031-43dc-8b2b-001a4c43147e" >
+		<http:listener doc:name="Listener for HTTP" doc:id="08a2de9d-2a92-4929-b3c0-0e271266efa4" config-ref="Start" path="/test"/>
+		<logger level="INFO" doc:name="Log incoming request" doc:id="2ac78d83-7441-425f-86ce-daf13a0d8830" message='Logging the request. Sending Param: #[attributes.queryParams["props"]]'/>
+		<mule-spring-cloud-config:get-properties doc:name="Get Properties using Query Param props" doc:id="f1dd6095-d7c5-478e-a7f6-73a60642a9ed" config-ref="Spring_Cloud_Config_Config" placeholder='#[attributes.queryParams["props"]]'/>
+		<logger level="INFO" doc:name="Logger property and respond to HTTP request" doc:id="100d92e7-88ed-41c2-a8a3-91470c7c5bc4" message='#[payload]'/>
+	</flow>
+</mule>
