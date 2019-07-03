@@ -99,7 +99,7 @@
     	<dependency>
             <groupId>com.ku.portfolio</groupId>
             <artifactId>spring-cloud-config-connector</artifactId>
-            <version>4.9.0</version>
+            <version>4.0.0</version>
             <classifier>mule-plugin</classifier>
         </dependency>
     </dependencies>
